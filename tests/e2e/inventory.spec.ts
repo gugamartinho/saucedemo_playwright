@@ -1,4 +1,5 @@
 import { test, expect, VALID_USER } from '../fixtures';
+import { isSortedAsc, isSortedDesc, isSortedNumericAsc, isSortedNumericDesc } from '../../utils/sort.utils';
 
 test.describe('Inventory', () => {
   test.beforeEach(async ({ loginPage, page }) => {
@@ -28,29 +29,25 @@ test.describe('Inventory', () => {
   test('should sort products A to Z', async ({ inventoryPage }) => {
     await inventoryPage.sortBy('az');
     const names = await inventoryPage.getItemNames();
-    const sorted = [...names].sort();
-    expect(names).toEqual(sorted);
+    expect(isSortedAsc(names)).toBe(true);
   });
 
   test('should sort products Z to A', async ({ inventoryPage }) => {
     await inventoryPage.sortBy('za');
     const names = await inventoryPage.getItemNames();
-    const sorted = [...names].sort().reverse();
-    expect(names).toEqual(sorted);
+    expect(isSortedDesc(names)).toBe(true);
   });
 
   test('should sort products by price low to high', async ({ inventoryPage }) => {
     await inventoryPage.sortBy('lohi');
     const prices = await inventoryPage.getItemPrices();
-    const sorted = [...prices].sort((a, b) => a - b);
-    expect(prices).toEqual(sorted);
+    expect(isSortedNumericAsc(prices)).toBe(true);
   });
 
   test('should sort products by price high to low', async ({ inventoryPage }) => {
     await inventoryPage.sortBy('hilo');
     const prices = await inventoryPage.getItemPrices();
-    const sorted = [...prices].sort((a, b) => b - a);
-    expect(prices).toEqual(sorted);
+    expect(isSortedNumericDesc(prices)).toBe(true);
   });
 
   test('should logout successfully', async ({ inventoryPage, page }) => {

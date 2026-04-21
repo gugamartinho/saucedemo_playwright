@@ -46,7 +46,7 @@ playwright-automation-portfolio/
 | Cart | Empty cart, add items, remove items, proceed to checkout |
 | Checkout | Full E2E flow, form validation, cancel, multiple items |
 
-**Total: 23 automated tests** running across Chromium, Firefox, and Mobile Chrome.
+**Total: 24 automated tests** running across Chromium
 
 ## Getting Started
 
