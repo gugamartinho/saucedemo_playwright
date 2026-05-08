@@ -78,7 +78,7 @@ VALID_USERNAME=standard_user
 VALID_PASSWORD=secret_sauce
 ```
 
-The project now loads `TEST_USER` and `TEST_PASSWORD` from `.env` and uses `BASE_URL` when provided.
+The project now loads `VALID_USERNAME` and `VALID_PASSWORD` from `.env`.
 
 ### Running Tests
 

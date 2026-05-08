@@ -16,14 +16,14 @@ test.describe('Inventory', () => {
   test('should add item to cart', async ({ inventoryPage }) => {
     await inventoryPage.addItemToCart('Sauce Labs Backpack');
     const cartCount = await inventoryPage.getCartCount();
-    expect(cartCount).toBe('1');
+    expect(cartCount).toBe(1);
   });
 
   test('should add multiple items to cart', async ({ inventoryPage }) => {
     await inventoryPage.addItemToCart('Sauce Labs Backpack');
     await inventoryPage.addItemToCart('Sauce Labs Bike Light');
     const cartCount = await inventoryPage.getCartCount();
-    expect(cartCount).toBe('2');
+    expect(cartCount).toBe(2);
   });
 
   test('should sort products A to Z', async ({ inventoryPage }) => {
