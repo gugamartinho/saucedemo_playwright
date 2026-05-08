@@ -63,6 +63,23 @@ npm install
 npx playwright install
 ```
 
+### Environment variables
+
+Create a `.env` file at the project root or copy `.env.example`.
+
+```bash
+cp .env.example .env
+```
+
+Then update the credentials if needed:
+
+```env
+VALID_USERNAME=standard_user
+VALID_PASSWORD=secret_sauce
+```
+
+The project now loads `TEST_USER` and `TEST_PASSWORD` from `.env` and uses `BASE_URL` when provided.
+
 ### Running Tests
 
 ```bash
@@ -90,19 +107,4 @@ npx playwright test -g "should login successfully"
 
 # Single browser only
 npx playwright test --project=chromium
-```
-
-## CI/CD
-
-Tests run automatically on:
-- Every push to `main` or `develop`
-- Every Pull Request targeting `main`
-- Scheduled run Monday–Friday at 08:00 UTC
-
-The HTML report is uploaded as a GitHub Actions artifact and retained for 30 days.
-
-## Author
-
-David Martinho — QA Automation Engineer  
-[LinkedIn](https://www.linkedin.com/in/david-martinho-6a99a492/) · [GitHub](https://github.com/gugamartinho)
 ```

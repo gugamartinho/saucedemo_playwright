@@ -3,11 +3,13 @@ import { LoginPage } from '../../pages/LoginPage';
 import { InventoryPage } from '../../pages/InventoryPage';
 import { CartPage } from '../../pages/CartPage';
 import { CheckoutPage } from '../../pages/CheckoutPage';
+import dotenv from 'dotenv';
 
-// Test constants
+dotenv.config();
+
 export const VALID_USER = {
-  username: 'standard_user',
-  password: 'secret_sauce',
+  username: process.env.VALID_USERNAME || '',
+  password: process.env.VALID_PASSWORD || '',
 };
 
 export const LOCKED_USER = {
