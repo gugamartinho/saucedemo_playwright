@@ -108,3 +108,34 @@ npx playwright test -g "should login successfully"
 # Single browser only
 npx playwright test --project=chromium
 ```
+
+### Running with Docker
+
+1. Build the Docker image
+To create a reproducible environment for running Playwright tests, you can build the Docker image using the provided Dockerfile:
+```bash
+docker build -t playwright-saucedemo-tests .
+```
+This command packages your project, installs dependencies, and prepares the Playwright browsers inside a containerized environment.
+
+2. Run Playwright tests inside Docker
+After building the image, you can execute the full Playwright test suite inside the container:
+```bash
+docker run --rm playwright-saucedemo-tests
+```
+This runs the tests using the environment defined in the Docker image, ensuring the same setup locally and in CI.
+
+3. Accessing the Playwright report
+When running tests inside Docker, the HTML report is generated inside the container.
+To make it available on your machine, mount the report directory:
+```bash
+docker run --rm -v ${PWD}/playwright-report:/app/playwright-report playwright-saucedemo-tests
+```
+After the container finishes, you can open the report locally:
+```bash
+npx playwright show-report
+```
+Or by opening the file directly:
+```bash
+playwright-report/index.html
+```
