@@ -1,5 +1,5 @@
 # 1. Usa a imagem oficial do Playwright com Node + browsers
-FROM mcr.microsoft.com/playwright:v1.59.1-jammy
+FROM mcr.microsoft.com/playwright:v1.60.0-jammy
 
 # 2. Define o diretório de trabalho dentro do container
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 4. Instala dependências do projeto
-RUN npm install
+RUN npm ci
 
 # 5. Copia o resto do código
 COPY . .
