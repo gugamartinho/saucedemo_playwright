@@ -59,7 +59,8 @@ playwright-automation-portfolio/
 ```bash
 git clone https://github.com/gugamartinho/saucedemo_playwright.git
 cd saucedemo_playwright
-npm install
+npm ci
+npm install -D @playwright/test
 npx playwright install
 ```
 
