@@ -5,23 +5,21 @@ import { CartPage } from '../../pages/CartPage';
 import { CheckoutPage } from '../../pages/CheckoutPage';
 import dotenv from 'dotenv';
 
+// Load environment variables from .env file
 dotenv.config();
 
+// Test data for login tests
 export const VALID_USER = {
   username: process.env.VALID_USERNAME || '',
   password: process.env.VALID_PASSWORD || '',
 };
 
 export const LOCKED_USER = {
-  username: 'locked_out_user',
-  password: 'secret_sauce',
+  username: process.env.LOCKED_USERNAME || '',
+  password: process.env.LOCKED_PASSWORD || '',
 };
 
-export const PERFORMANCE_USER = {
-  username: 'performance_glitch_user',
-  password: 'secret_sauce',
-};
-
+// Additional test data for checkout process
 export const CUSTOMER = {
   firstName: 'David',
   lastName: 'Martinho',
@@ -36,6 +34,7 @@ type Pages = {
   checkoutPage: CheckoutPage;
 };
 
+// Extend the base test with our custom fixtures
 export const test = base.extend<Pages>({
   loginPage: async ({ page }, use) => {
     await use(new LoginPage(page));
@@ -51,4 +50,5 @@ export const test = base.extend<Pages>({
   },
 });
 
+// Re-export expect for convenience
 export { expect } from '@playwright/test';
