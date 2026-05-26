@@ -6,7 +6,11 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:ui": "npx playwright test --ui",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "test:login": "npx playwright test tests/e2e/login.spec.ts",
+    "test:checkout": "npx playwright test tests/e2e/checkout.spec.ts",
+    "test:inventory": "npx playwright test tests/e2e/inventory.spec.ts",
+    "test:cart": "npx playwright test tests/e2e/cart.spec.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
