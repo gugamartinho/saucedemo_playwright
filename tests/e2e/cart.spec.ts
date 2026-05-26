@@ -1,38 +1,36 @@
 import { test, expect, VALID_USER } from '../fixtures';
+import products from '../fixtures/products/productsData.json';
 
 test.describe('Cart', () => {
-  test.beforeEach(async ({ loginPage, page }) => {
+  test.beforeEach(async ({ loginPage, inventoryPage, cartPage, basePage, checkoutStepOnePage }) => {
     await loginPage.goto();
     await loginPage.login(VALID_USER.username, VALID_USER.password);
-    await expect(page).toHaveURL('/inventory.html');
+    await inventoryPage.expectLoaded();
   });
 
   test('should be empty by default', async ({ cartPage }) => {
     await cartPage.goto();
-    const count = await cartPage.getCartItemCount();
-    expect(count).toBe(0);
+    await cartPage.checkNumberOfItems(0);
   });
 
-  test('should show added items in cart', async ({ inventoryPage, cartPage, page }) => {
-    await inventoryPage.addItemToCart('Sauce Labs Backpack');
-    await inventoryPage.addItemToCart('Sauce Labs Bike Light');
-    await cartPage.goto();
-    const count = await cartPage.getCartItemCount();
-    expect(count).toBe(2);
+  test('should show added items in cart', async ({ inventoryPage, cartPage, basePage }) => {
+    await inventoryPage.addItemToCart(products.products[0].name);
+    await inventoryPage.addItemToCart(products.products[1].name);
+    await basePage.goToCart();
+    await cartPage.checkNumberOfItems(2);
   });
 
-  test('should remove item from cart', async ({ inventoryPage, cartPage }) => {
-    await inventoryPage.addItemToCart('Sauce Labs Backpack');
-    await cartPage.goto();
-    await cartPage.removeItem('Sauce Labs Backpack');
-    const count = await cartPage.getCartItemCount();
-    expect(count).toBe(0);
+  test('should remove item from cart', async ({ inventoryPage, cartPage, basePage }) => {
+    await inventoryPage.addItemToCart(products.products[0].name);
+    await basePage.goToCart();
+    await cartPage.removeItem(products.products[0].name);
+    await cartPage.checkNumberOfItems(0);
   });
 
-  test('should navigate to checkout', async ({ inventoryPage, cartPage, page }) => {
-    await inventoryPage.addItemToCart('Sauce Labs Backpack');
-    await cartPage.goto();
+  test('should navigate to checkout', async ({ inventoryPage, cartPage, basePage, checkoutStepOnePage }) => {
+    await inventoryPage.addItemToCart(products.products[0].name);
+    await basePage.goToCart();
     await cartPage.proceedToCheckout();
-    await expect(page).toHaveURL('/checkout-step-one.html');
+    await checkoutStepOnePage.expectStepOneLoaded();
   });
 });
