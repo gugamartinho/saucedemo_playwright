@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect} from '@playwright/test';
 
 export class LoginPage {
   readonly page: Page;
@@ -15,6 +15,7 @@ export class LoginPage {
     this.errorMessage = page.locator('[data-test="error"]');
   }
 
+  // actions
   async goto() {
     await this.page.goto('/');
   }
@@ -25,7 +26,12 @@ export class LoginPage {
     await this.loginButton.click();
   }
 
+  // assertions
   async getErrorMessage(): Promise<string> {
     return await this.errorMessage.innerText();
+  }
+
+  async checkErrorMessage(expectedMessage: string) {
+    await expect(this.errorMessage).toHaveText(expectedMessage);
   }
 }
