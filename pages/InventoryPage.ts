@@ -7,50 +7,24 @@ export class InventoryPage {
   readonly inventoryItems: Locator;
   readonly inventoryItemNames: Locator;
   readonly inventoryItemPrices: Locator;
-  readonly cartBadge: Locator;
-  readonly cartLink: Locator;
   readonly sortDropdown: Locator;
-  readonly menuButton: Locator;
-  readonly logoutLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.inventoryItems = page.locator('.inventory_item');
     this.inventoryItemNames = page.locator('[data-test="inventory-item-name"]');
     this.inventoryItemPrices = page.locator('[data-test="inventory-item-price"]');
-    this.cartBadge = page.locator('.shopping_cart_badge');
-    this.cartLink = page.locator('[data-test="shopping-cart-link"]');
     this.sortDropdown = page.locator('[data-test="product-sort-container"]');
-    this.menuButton = page.locator('#react-burger-menu-btn');
-    this.logoutLink = page.locator('#logout_sidebar_link');
   }
 
-  async expectLoaded(): Promise<void> {
-    await expect(this.page).toHaveURL('/inventory.html');
-    await expect(this.inventoryItems.first()).toBeVisible();
-  }
-
-  async getItemCount(): Promise<number> {
-    return await this.inventoryItems.count();
+  // actions
+  async goto() {
+    await this.page.goto('/inventory.html');
   }
 
   async addItemToCart(itemName: string): Promise<void> {
     const item = this.getInventoryItemByName(itemName);
     await item.getByRole('button', { name: 'Add to cart' }).click();
-  }
-
-  async getCartCount(): Promise<number> {
-    // SauceDemo only renders the badge after the first item is added.
-    if ((await this.cartBadge.count()) === 0) {
-      return 0;
-    }
-
-    const badgeText = await this.cartBadge.innerText();
-    return Number(badgeText);
-  }
-
-  async goToCart(): Promise<void> {
-    await this.cartLink.click();
   }
 
   async sortBy(option: SortOption): Promise<void> {
@@ -66,15 +40,44 @@ export class InventoryPage {
     return priceTexts.map(price => Number(price.replace('$', '')));
   }
 
-  async logout(): Promise<void> {
-    await this.menuButton.click();
-    await this.logoutLink.click();
-  }
-
   private getInventoryItemByName(itemName: string): Locator {
     // Scope actions to the product card so similarly named products do not clash.
     return this.inventoryItems.filter({
       has: this.page.locator('[data-test="inventory-item-name"]', { hasText: itemName }),
     });
+  }
+
+  // assertions
+  async expectLoaded(): Promise<void> {
+    await expect(this.page).toHaveURL('/inventory.html');
+    await expect(this.inventoryItems.first()).toBeVisible();
+  }
+
+  async checkNumberOfItems(expectedCount: number): Promise<void> {
+    await expect(this.inventoryItems).toHaveCount(expectedCount);
+  }
+
+  async checkProductsSortedAscByName(): Promise<void> {
+    const names = await this.getItemNames();
+    const sortedNames = [...names].sort();
+    expect(names).toEqual(sortedNames);
+  }
+
+  async checkProductsSortedDescByName(): Promise<void> {
+    const names = await this.getItemNames();
+    const sortedNames = [...names].sort().reverse();
+    expect(names).toEqual(sortedNames);
+  }
+
+  async checkProductsSortedAscByPrice(): Promise<void> {
+    const prices = await this.getItemPrices();
+    const sortedPrices = [...prices].sort((a, b) => a - b);
+    expect(prices).toEqual(sortedPrices);
+  }
+
+  async checkProductsSortedDescByPrice(): Promise<void> {
+    const prices = await this.getItemPrices();
+    const sortedPrices = [...prices].sort((a, b) => b - a);
+    expect(prices).toEqual(sortedPrices);
   }
 }
