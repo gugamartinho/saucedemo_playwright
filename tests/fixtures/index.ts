@@ -2,7 +2,9 @@ import { test as base } from '@playwright/test';
 import { LoginPage } from '../../pages/LoginPage';
 import { InventoryPage } from '../../pages/InventoryPage';
 import { CartPage } from '../../pages/CartPage';
-import { CheckoutPage } from '../../pages/CheckoutPage';
+import { CheckoutStepOnePage } from '../../pages/CheckoutStepOnePage';
+import { CheckoutStepTwoPage } from '../../pages/CheckoutStepTwoPage';
+import { CheckoutConfirmationPage } from '../../pages/CheckoutConfirmationPage';
 import dotenv from 'dotenv';
 
 // Load environment variables from .env file
@@ -19,19 +21,14 @@ export const LOCKED_USER = {
   password: process.env.LOCKED_PASSWORD || '',
 };
 
-// Additional test data for checkout process
-export const CUSTOMER = {
-  firstName: 'David',
-  lastName: 'Martinho',
-  postalCode: '2000-105',
-};
-
 // Extended fixtures
 type Pages = {
   loginPage: LoginPage;
   inventoryPage: InventoryPage;
   cartPage: CartPage;
-  checkoutPage: CheckoutPage;
+  checkoutStepOnePage: CheckoutStepOnePage;
+  checkoutStepTwoPage: CheckoutStepTwoPage;
+  checkoutConfirmationPage: CheckoutConfirmationPage;
 };
 
 // Extend the base test with our custom fixtures
@@ -45,8 +42,14 @@ export const test = base.extend<Pages>({
   cartPage: async ({ page }, use) => {
     await use(new CartPage(page));
   },
-  checkoutPage: async ({ page }, use) => {
-    await use(new CheckoutPage(page));
+  checkoutStepOnePage: async ({ page }, use) => {
+    await use(new CheckoutStepOnePage(page));
+  },
+  checkoutStepTwoPage: async ({ page }, use) => {
+    await use(new CheckoutStepTwoPage(page));
+  },
+  checkoutConfirmationPage: async ({ page }, use) => {
+    await use(new CheckoutConfirmationPage(page));
   },
 });
 

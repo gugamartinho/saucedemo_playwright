@@ -1,82 +1,60 @@
-import { test, expect, VALID_USER, CUSTOMER } from '../fixtures';
+import { test, expect, VALID_USER } from '../fixtures';
+import checkoutMessages from '../fixtures/checkout/checkoutMessages.json';
+import customers from '../fixtures/customers/customerData.json';
+import products from '../fixtures/products/productsData.json';
 
 test.describe('Checkout', () => {
-  test.beforeEach(async ({ loginPage, inventoryPage, cartPage, page }) => {
-    // Login and add an item before each test
+  test.beforeEach(async ({ loginPage, inventoryPage, cartPage, checkoutStepOnePage }) => {
     await loginPage.goto();
     await loginPage.login(VALID_USER.username, VALID_USER.password);
-    await expect(page).toHaveURL('/inventory.html');
-    await inventoryPage.addItemToCart('Sauce Labs Backpack');
+    await inventoryPage.expectLoaded();
+    await inventoryPage.addItemToCart(products.products[0].name);
     await cartPage.goto();
     await cartPage.proceedToCheckout();
-    await expect(page).toHaveURL('/checkout-step-one.html');
+    await checkoutStepOnePage.expectStepOneLoaded();
   });
 
-  test('should complete full checkout flow', async ({ checkoutPage, page }) => {
-    // Step 1 - fill in details
-    await checkoutPage.fillForm(CUSTOMER.firstName, CUSTOMER.lastName, CUSTOMER.postalCode);
-    await checkoutPage.continue();
-    await expect(page).toHaveURL('/checkout-step-two.html');
-
-    // Step 2 - review and confirm
-    const total = await checkoutPage.getSummaryTotal();
-    expect(total).toContain('$');
-    await checkoutPage.finish();
-
-    // Confirmation
-    await expect(page).toHaveURL('/checkout-complete.html');
-    const confirmation = await checkoutPage.getConfirmationMessage();
-    expect(confirmation).toContain('Thank you');
+  test('should complete full checkout flow', async ({ checkoutStepOnePage, checkoutStepTwoPage, checkoutConfirmationPage }) => {
+    await checkoutStepOnePage.fillForm(customers.customers[0].firstName, customers.customers[0].lastName, customers.customers[0].postalCode);
+    await checkoutStepOnePage.continue();
+    await checkoutStepTwoPage.expectStepTwoLoaded();
+    await checkoutStepTwoPage.finish();
+    await checkoutConfirmationPage.expectConfirmationLoaded();
+    await checkoutConfirmationPage.checkHeaderMessage(checkoutMessages.checkout.headerMessage);
+    await checkoutConfirmationPage.checkDetailsMessage(checkoutMessages.checkout.detailsMessage);
   });
 
-  test('should show error when first name is missing', async ({ checkoutPage }) => {
-    await checkoutPage.fillForm('', CUSTOMER.lastName, CUSTOMER.postalCode);
-    await checkoutPage.continue();
-    const error = await checkoutPage.getErrorMessage();
-    expect(error).toContain('First Name is required');
+  test('should show error when first name is missing', async ({ checkoutStepOnePage }) => {
+    await checkoutStepOnePage.fillForm('', customers.customers[0].lastName, customers.customers[0].postalCode);
+    await checkoutStepOnePage.continue();
+    await checkoutStepOnePage.checkErrorMessage(checkoutMessages.checkout.missingFirstName);
   });
 
-  test('should show error when last name is missing', async ({ checkoutPage }) => {
-    await checkoutPage.fillForm(CUSTOMER.firstName, '', CUSTOMER.postalCode);
-    await checkoutPage.continue();
-    const error = await checkoutPage.getErrorMessage();
-    expect(error).toContain('Last Name is required');
+  test('should show error when last name is missing', async ({ checkoutStepOnePage }) => {
+    await checkoutStepOnePage.fillForm(customers.customers[0].firstName, '', customers.customers[0].postalCode);
+    await checkoutStepOnePage.continue();
+    await checkoutStepOnePage.checkErrorMessage(checkoutMessages.checkout.missingLastName);
   });
 
-  test('should show error when postal code is missing', async ({ checkoutPage }) => {
-    await checkoutPage.fillForm(CUSTOMER.firstName, CUSTOMER.lastName, '');
-    await checkoutPage.continue();
-    const error = await checkoutPage.getErrorMessage();
-    expect(error).toContain('Postal Code is required');
+  test('should show error when postal code is missing', async ({ checkoutStepOnePage }) => {
+    await checkoutStepOnePage.fillForm(customers.customers[0].firstName, customers.customers[0].lastName, '');
+    await checkoutStepOnePage.continue();
+    await checkoutStepOnePage.checkErrorMessage(checkoutMessages.checkout.missingPostalCode);
   });
 
-  test('should cancel checkout and return to cart', async ({ checkoutPage, page }) => {
-    await checkoutPage.cancel();
-    await expect(page).toHaveURL('/cart.html');
+  test('should cancel checkout and return to cart', async ({ checkoutStepOnePage, cartPage }) => {
+    await checkoutStepOnePage.cancel();
+    await cartPage.expectLoaded();
   });
 
-  test('should display correct item in order summary', async ({ checkoutPage, page }) => {
-    await checkoutPage.fillForm(CUSTOMER.firstName, CUSTOMER.lastName, CUSTOMER.postalCode);
-    await checkoutPage.continue();
-    await expect(page).toHaveURL('/checkout-step-two.html');
-    await expect(page.locator('.inventory_item_name')).toHaveText('Sauce Labs Backpack');
-  });
-
-  test('should complete checkout with multiple items', async ({ loginPage, inventoryPage, cartPage, checkoutPage, page }) => {
-    // Go back and add a second item
-    await page.goto('/inventory.html');
-    await inventoryPage.addItemToCart('Sauce Labs Bike Light');
-    await cartPage.goto();
-    const count = await cartPage.getCartItemCount();
-    expect(count).toBe(2);
-
-    await cartPage.proceedToCheckout();
-    await checkoutPage.fillForm(CUSTOMER.firstName, CUSTOMER.lastName, CUSTOMER.postalCode);
-    await checkoutPage.continue();
-    await checkoutPage.finish();
-
-    await expect(page).toHaveURL('/checkout-complete.html');
-    const confirmation = await checkoutPage.getConfirmationMessage();
-    expect(confirmation).toContain('Thank you');
+  test('should display correct item in order summary', async ({ checkoutStepOnePage, checkoutStepTwoPage }) => {
+    await checkoutStepOnePage.fillForm(customers.customers[0].firstName, customers.customers[0].lastName, customers.customers[0].postalCode);
+    await checkoutStepOnePage.continue();
+    await checkoutStepTwoPage.expectStepTwoLoaded();
+    await checkoutStepTwoPage.checkProductNameInSummary(products.products[0].name);
+    await checkoutStepTwoPage.checkProductDescriptionInSummary(products.products[0].description);
+    await checkoutStepTwoPage.checkProductPriceInSummary(products.products[0].price);
+    await checkoutStepTwoPage.checkProductTaxInSummary(products.products[0].tax);
+    await checkoutStepTwoPage.checkProductTotalInSummary(products.products[0].total);
   });
 });

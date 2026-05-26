@@ -1,7 +1,0 @@
-{
-  "checkout": {
-    "missingFirstName": "Error: First Name is required",
-    "missingLastName": "Error: Last Name is required",
-    "missingPostalCode": "Error: Postal Code is required"
-  }
-}
