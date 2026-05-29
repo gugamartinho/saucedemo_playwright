@@ -31,23 +31,24 @@ jobs:
 
       - name: Run Playwright tests
         run: |
-          if [ "${{ github.event.inputs.target }}" = "chrome" ]; then
-            npx playwright test --project="chrome" --grep-invert "@mobile"
-          elif [ "${{ github.event.inputs.target }}" = "mobile" ]; then
-            npx playwright test --project="android" --grep "@mobile"
-          else
-            echo "❌ Target inválido. Usa 'chrome' ou 'mobile'."
-            exit 1
-          fi
+          npx playwright test --project="chrome" --grep-invert "@mobile"  
+          npx playwright test --project="android" --grep "@mobile"
 
         env:
           VALID_USERNAME: ${{ secrets.VALID_USERNAME }}
           VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
 
-      - name: Upload test report
+      - name: Upload Chrome report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          name: chrome-report
+          path: playwright-report
+        
+      - name: Upload Mobile report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-report
+          path: playwright-report
+
