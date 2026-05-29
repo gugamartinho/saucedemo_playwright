@@ -1,6 +1,7 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator, expect } from "@playwright/test";
 
-export class CartPage { // Define locators for cart items and buttons
+export class CartPage {
+  // Define locators for cart items and buttons
   readonly page: Page;
   readonly cartItems: Locator;
   readonly checkoutButton: Locator;
@@ -15,7 +16,7 @@ export class CartPage { // Define locators for cart items and buttons
 
   // actions
   async goto() {
-    await this.page.goto('/cart.html');
+    await this.page.goto("/cart.html");
   }
 
   async removeItem(itemName: string) {
@@ -24,7 +25,7 @@ export class CartPage { // Define locators for cart items and buttons
   }
 
   async proceedToCheckout() {
-    await this.checkoutButton.click(); 
+    await this.checkoutButton.click();
   }
 
   // assertions
@@ -33,7 +34,7 @@ export class CartPage { // Define locators for cart items and buttons
   }
 
   async expectLoaded(): Promise<void> {
-    await expect(this.page).toHaveURL('/cart.html');
+    await expect(this.page).toHaveURL("/cart.html");
     await expect(this.cartItems.first()).toBeVisible();
   }
 }

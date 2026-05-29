@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch:  
+  workflow_dispatch:
 
 jobs:
   test:
@@ -20,17 +20,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npm test
+        run: |
+          if [ "${{ github.event.inputs.target }}" = "chrome" ]; then
+            npx playwright test --project="chrome" --grep-invert "@mobile"
+          elif [ "${{ github.event.inputs.target }}" = "mobile" ]; then
+            npx playwright test --project="android" --grep "@mobile"
+          else
+            echo "❌ Target inválido. Usa 'chrome' ou 'mobile'."
+            exit 1
+          fi
+
         env:
           VALID_USERNAME: ${{ secrets.VALID_USERNAME }}
           VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}

@@ -1,4 +1,4 @@
-import { Page, Locator, expect} from '@playwright/test';
+import { Page, Locator, expect } from "@playwright/test";
 
 export class CheckoutStepTwoPage {
   readonly page: Page;
@@ -21,8 +21,12 @@ export class CheckoutStepTwoPage {
     this.summaryTotal = page.locator('[data-test="total-label"]');
     this.confirmationHeader = page.locator('[data-test="complete-header"]');
     this.confirmationDetails = page.locator('[data-test="complete-text"]');
-    this.productNameInSummary = page.locator('[data-test="inventory-item-name"]');
-    this.productDescriptionInSummary = page.locator('[data-test="inventory-item-desc"]');
+    this.productNameInSummary = page.locator(
+      '[data-test="inventory-item-name"]',
+    );
+    this.productDescriptionInSummary = page.locator(
+      '[data-test="inventory-item-desc"]',
+    );
   }
 
   // actions
@@ -36,16 +40,17 @@ export class CheckoutStepTwoPage {
 
   // assertions
   async expectStepTwoLoaded() {
-    await expect(this.page).toHaveURL('/checkout-step-two.html');
+    await expect(this.page).toHaveURL("/checkout-step-two.html");
   }
 
   async checkProductNameInSummary(expectedName: string) {
     const productName = await this.productNameInSummary.innerText();
     expect(productName).toBe(expectedName);
   }
-  
+
   async checkProductDescriptionInSummary(expectedDescription: string) {
-    const productDescription = await this.productDescriptionInSummary.innerText();
+    const productDescription =
+      await this.productDescriptionInSummary.innerText();
     expect(productDescription).toContain(expectedDescription);
   }
 
