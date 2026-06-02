@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { APP_URLS } from "../utils/url.utils";
 
 type SortOption = "az" | "za" | "lohi" | "hilo";
 
@@ -22,13 +23,35 @@ export class InventoryPage {
   }
 
   // actions
-  async goto() {
-    await this.page.goto("/inventory.html");
+  async openItem(
+    itemName: string,
+    testType: string = "desktop",
+  ): Promise<void> {
+    const item = this.getInventoryItemByName(itemName);
+
+    if (testType === "mobile") {
+      await item.locator('[data-test="inventory-item-name"]').tap();
+    } else {
+      await item.locator('[data-test="inventory-item-name"]').click();
+    }
+
+    await expect(this.page).toHaveURL(APP_URLS.INVENTORY_ITEM);
   }
 
-  async addItemToCart(itemName: string): Promise<void> {
+  async goto() {
+    await this.page.goto(APP_URLS.INVENTORY);
+  }
+
+  async addItemToCart(
+    itemName: string,
+    testType: string = "desktop",
+  ): Promise<void> {
     const item = this.getInventoryItemByName(itemName);
-    await item.getByRole("button", { name: "Add to cart" }).click();
+    if (testType === "mobile") {
+      await item.getByRole("button", { name: "Add to cart" }).tap();
+    } else {
+      await item.getByRole("button", { name: "Add to cart" }).click();
+    }
   }
 
   async sortBy(option: SortOption): Promise<void> {
@@ -55,7 +78,7 @@ export class InventoryPage {
 
   // assertions
   async expectLoaded(): Promise<void> {
-    await expect(this.page).toHaveURL("/inventory.html");
+    await expect(this.page).toHaveURL(APP_URLS.INVENTORY);
     await expect(this.inventoryItems.first()).toBeVisible();
   }
 

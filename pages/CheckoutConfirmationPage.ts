@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { APP_URLS } from "../utils/url.utils";
 
 export class CheckoutConfirmationPage {
   readonly page: Page;
@@ -28,7 +29,7 @@ export class CheckoutConfirmationPage {
   }
 
   async expectConfirmationLoaded() {
-    await expect(this.page).toHaveURL("/checkout-complete.html");
+    await expect(this.page).toHaveURL(APP_URLS.CHECKOUT_COMPLETE);
   }
 
   async checkHeaderMessage(expectedMessage: string) {

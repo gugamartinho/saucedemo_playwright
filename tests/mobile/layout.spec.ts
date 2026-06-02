@@ -5,7 +5,7 @@ import { test, expect, VALID_USER, LOCKED_USER } from "../fixtures";
 test.describe("Login", () => {
   test.beforeEach(async ({ loginPage, inventoryPage }) => {
     await loginPage.goto();
-    await loginPage.login(VALID_USER.username, VALID_USER.password);
+    await loginPage.login(VALID_USER.username, VALID_USER.password, "mobile");
     await inventoryPage.expectLoaded();
   });
 
@@ -19,9 +19,9 @@ test.describe("Login", () => {
   test("@mobile Menu mobile should open and close correctly", async ({
     basePage,
   }) => {
-    await basePage.openMenu();
+    await basePage.openMenu("mobile");
     await basePage.checkMenuIsOpen();
-    await basePage.closeMenu();
+    await basePage.closeMenu("mobile");
     await basePage.checkMenuWrapIsHidden();
   });
 
@@ -29,7 +29,7 @@ test.describe("Login", () => {
     basePage,
     inventoryPage,
   }) => {
-    await basePage.openMenu();
+    await basePage.openMenu("mobile");
     await basePage.checkMenuIsOpen();
     await inventoryPage.checkActiveOptionFilterIsHidden();
   });

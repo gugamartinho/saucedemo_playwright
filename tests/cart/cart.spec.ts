@@ -28,7 +28,7 @@ test.describe("Cart", () => {
   }) => {
     await inventoryPage.addItemToCart(products.products[0].name);
     await inventoryPage.addItemToCart(products.products[1].name);
-    await basePage.goToCart();
+    await basePage.openShoppingCart();
     await cartPage.checkNumberOfItems(2);
   });
 
@@ -38,7 +38,7 @@ test.describe("Cart", () => {
     basePage,
   }) => {
     await inventoryPage.addItemToCart(products.products[0].name);
-    await basePage.goToCart();
+    await basePage.openShoppingCart();
     await cartPage.removeItem(products.products[0].name);
     await cartPage.checkNumberOfItems(0);
   });
@@ -50,7 +50,7 @@ test.describe("Cart", () => {
     checkoutStepOnePage,
   }) => {
     await inventoryPage.addItemToCart(products.products[0].name);
-    await basePage.goToCart();
+    await basePage.openShoppingCart();
     await cartPage.proceedToCheckout();
     await checkoutStepOnePage.expectStepOneLoaded();
   });

@@ -6,6 +6,7 @@ import { CheckoutStepOnePage } from '../../pages/CheckoutStepOnePage';
 import { CheckoutStepTwoPage } from '../../pages/CheckoutStepTwoPage';
 import { CheckoutConfirmationPage } from '../../pages/CheckoutConfirmationPage';
 import {BasePage} from '../../pages/BasePage';
+import { InventoryItemPage } from "@pages/InventoryItemPage";
 import dotenv from 'dotenv';
 
 // Load environment variables from .env file
@@ -31,6 +32,7 @@ type Pages = {
   checkoutStepTwoPage: CheckoutStepTwoPage;
   checkoutConfirmationPage: CheckoutConfirmationPage;
   basePage: BasePage;
+  inventoryItemPage: InventoryItemPage;
 };
 
 // Extend the base test with our custom fixtures
@@ -55,6 +57,9 @@ export const test = base.extend<Pages>({
   },
   basePage: async ({ page }, use) => {
     await use(new BasePage(page));
+  },
+  inventoryItemPage: async ({ page }, use) => {
+    await use(new InventoryItemPage(page));
   }
 });
 

@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { APP_URLS } from "../utils/url.utils";
 
 export class CheckoutStepTwoPage {
   readonly page: Page;
@@ -40,7 +41,7 @@ export class CheckoutStepTwoPage {
 
   // assertions
   async expectStepTwoLoaded() {
-    await expect(this.page).toHaveURL("/checkout-step-two.html");
+    await expect(this.page).toHaveURL(APP_URLS.CHECKOUT_STEP_TWO);
   }
 
   async checkProductNameInSummary(expectedName: string) {
