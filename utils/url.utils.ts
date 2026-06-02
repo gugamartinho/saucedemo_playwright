@@ -16,3 +16,16 @@ export function isValidUrl(url: string): boolean {
     return false;
   }
 }
+
+export const APP_URLS = {
+  LOGIN: "/",
+  INVENTORY: "/inventory.html",
+  INVENTORY_ITEM: /\/inventory-item\.html/,
+  CART: "/cart.html",
+  ABOUT: /saucelabs\.com/,
+  CHECKOUT_STEP_ONE: "/checkout-step-one.html",
+  CHECKOUT_STEP_TWO: "/checkout-step-two.html",
+  CHECKOUT_COMPLETE: "/checkout-complete.html",
+};
+
+
