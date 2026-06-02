@@ -28,13 +28,13 @@
     "test:cart:chrome:headed": "npx playwright test tests/cart/cart.spec.ts --project=chrome --headed",
     "test:cart:android:headed": "npx playwright test tests/cart/cart.spec.ts --project=android --headed",
     "test:mobile:layout:android": "npx playwright test tests/mobile/layout.spec.ts --project=android",
-    "test:mobile:cart:android": "npx playwright test tests/mobile/layout.spec.ts --project=android",
-    "test:mobile:navigation:android": "npx playwright test tests/mobile/layout.spec.ts --project=android",
-    "test:mobile:performance:android": "npx playwright test tests/mobile/layout.spec.ts --project=android",
+    "test:mobile:cart:android": "npx playwright test tests/mobile/cart.spec.ts --project=android",
+    "test:mobile:navigation:android": "npx playwright test tests/mobile/navigation.spec.ts --project=android",
+    "test:mobile:performance:android": "npx playwright test tests/mobile/performance.spec.ts --project=android",
     "test:mobile:layout:android:headed": "npx playwright test tests/mobile/layout.spec.ts --project=android --headed",
-    "test:mobile:cart:android:headed": "npx playwright test tests/mobile/layout.spec.ts --project=android --headed",
-    "test:mobile:navigation:android:headed": "npx playwright test tests/mobile/layout.spec.ts --project=android --headed",
-    "test:mobile:performance:android:headed": "npx playwright test tests/mobile/layout.spec.ts --project=android --headed"
+    "test:mobile:cart:android:headed": "npx playwright test tests/mobile/cart.spec.ts --project=android --headed",
+    "test:mobile:navigation:android:headed": "npx playwright test tests/mobile/navigation.spec.ts --project=android --headed",
+    "test:mobile:performance:android:headed": "npx playwright test tests/mobile/performance.spec.ts --project=android --headed"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
