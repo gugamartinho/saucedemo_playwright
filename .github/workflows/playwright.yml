@@ -32,9 +32,9 @@ jobs:
       - name: Run Chrome tests
         run: npx playwright test --project="chrome" --grep-invert "@mobile"
         env:
-          VALID_USERNAME: ${{ secrets.VALID_USERNAME }}
-          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
-          LOCKED_USERNAME: ${{ secrets.LOCKED_USERNAME }}
+          VALID_USERNAME: ${{ secrets.VALID_USERNAME }},
+          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }},
+          LOCKED_USERNAME: ${{ secrets.LOCKED_USERNAME }},
           LOCKED_PASSWORD: ${{ secrets.LOCKED_PASSWORD }}
 
       - name: Upload Chrome report
