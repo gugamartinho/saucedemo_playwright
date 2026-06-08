@@ -1,12 +1,6 @@
-import { test, expect, VALID_USER } from "../fixtures";
-import {
-  isSortedAsc,
-  isSortedDesc,
-  isSortedNumericAsc,
-  isSortedNumericDesc,
-} from "../../utils/sort.utils";
+import { test, expect } from "../fixtures";
+import { VALID_USER } from "../../data/users";
 import products from "../fixtures/products/productsData.json";
-import { BasePage } from "pages/BasePage";
 
 test.describe("Inventory", () => {
   test.beforeEach(async ({ loginPage, inventoryPage, basePage }) => {

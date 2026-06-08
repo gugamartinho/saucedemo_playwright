@@ -1,6 +1,6 @@
-import { BasePage } from "pages/BasePage";
+import { test, expect } from "../fixtures";
+import { VALID_USER } from "../../data/users";
 import { changeViewPortToLandscape } from "../../utils/viewport.utils";
-import { test, expect, VALID_USER, LOCKED_USER } from "../fixtures";
 
 test.describe("Login", () => {
   test.beforeEach(async ({ loginPage, inventoryPage }) => {

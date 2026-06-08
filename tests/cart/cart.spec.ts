@@ -1,4 +1,5 @@
-import { test, expect, VALID_USER } from "../fixtures";
+import { test, expect } from "../fixtures";
+import { VALID_USER } from "../../data/users";
 import products from "../fixtures/products/productsData.json";
 
 test.describe("Cart", () => {

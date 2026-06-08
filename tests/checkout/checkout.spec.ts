@@ -1,4 +1,5 @@
-import { test, expect, VALID_USER } from "../fixtures";
+import { test, expect } from "../fixtures";
+import { VALID_USER } from "../../data/users";
 import checkoutMessages from "../fixtures/checkout/checkoutMessages.json";
 import customers from "../fixtures/customers/customerData.json";
 import products from "../fixtures/products/productsData.json";

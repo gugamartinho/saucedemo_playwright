@@ -1,27 +1,12 @@
-import { test as base } from '@playwright/test';
-import { LoginPage } from '../../pages/LoginPage';
-import { InventoryPage } from '../../pages/InventoryPage';
-import { CartPage } from '../../pages/CartPage';
-import { CheckoutStepOnePage } from '../../pages/CheckoutStepOnePage';
-import { CheckoutStepTwoPage } from '../../pages/CheckoutStepTwoPage';
-import { CheckoutConfirmationPage } from '../../pages/CheckoutConfirmationPage';
-import {BasePage} from '../../pages/BasePage';
-import { InventoryItemPage } from "@pages/InventoryItemPage";
-import dotenv from 'dotenv';
-
-// Load environment variables from .env file
-dotenv.config();
-
-// Test data for login tests
-export const VALID_USER = {
-  username: process.env.VALID_USERNAME || '',
-  password: process.env.VALID_PASSWORD || '',
-};
-
-export const LOCKED_USER = {
-  username: process.env.LOCKED_USERNAME || '',
-  password: process.env.LOCKED_PASSWORD || '',
-};
+import { test as base } from "@playwright/test";
+import { LoginPage } from "../../pages/LoginPage";
+import { InventoryPage } from "../../pages/InventoryPage";
+import { CartPage } from "../../pages/CartPage";
+import { CheckoutStepOnePage } from "../../pages/CheckoutStepOnePage";
+import { CheckoutStepTwoPage } from "../../pages/CheckoutStepTwoPage";
+import { CheckoutConfirmationPage } from "../../pages/CheckoutConfirmationPage";
+import { BasePage } from "../../pages/BasePage";
+import { InventoryItemPage } from "../../pages/InventoryItemPage";
 
 // Extended fixtures
 type Pages = {
@@ -35,7 +20,6 @@ type Pages = {
   inventoryItemPage: InventoryItemPage;
 };
 
-// Extend the base test with our custom fixtures
 export const test = base.extend<Pages>({
   loginPage: async ({ page }, use) => {
     await use(new LoginPage(page));
@@ -60,8 +44,7 @@ export const test = base.extend<Pages>({
   },
   inventoryItemPage: async ({ page }, use) => {
     await use(new InventoryItemPage(page));
-  }
+  },
 });
 
-// Re-export expect for convenience
-export { expect } from '@playwright/test';
+export { expect } from "@playwright/test";

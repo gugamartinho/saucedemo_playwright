@@ -1,4 +1,5 @@
-import { test, expect, VALID_USER, LOCKED_USER } from "../fixtures";
+import { test, expect } from "../fixtures";
+import { VALID_USER, LOCKED_USER } from "../../data/users";
 import errorMessages from "../fixtures/login/errorMessages.json";
 
 test.describe("Login", () => {
